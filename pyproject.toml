@@ -1,0 +1,23 @@
+[project]
+name = "pinetree-chatbot"
+version = "0.1.0"
+requires-python = ">=3.11"
+# Keep identical to backend/requirements.txt (a test checks this); Vercel installs from this list.
+dependencies = [
+    "fastapi==0.142.1",
+    "uvicorn[standard]==0.54.0",
+    "pydantic==2.13.5",
+    "email-validator==2.3.0",
+    "sqlalchemy==2.1.1",
+    "python-dotenv==1.2.3",
+    "fastembed==0.8.1",
+    "apscheduler==3.11.3",
+    "psycopg2-binary>=2.9",
+]
+
+[project.optional-dependencies]
+dev = ["httpx==0.28.1", "pytest==9.1.1"]
+
+# Without this, Vercel guesses the app file and picks backend/main.py, where the `backend` package is not importable.
+[tool.vercel]
+entrypoint = "index:app"

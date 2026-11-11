@@ -1,4 +1,6 @@
+import tomllib
 from datetime import timedelta
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
@@ -26,6 +28,22 @@ def client():
 ])
 def test_database_url_names_the_postgres_driver(url, expected):
     assert normalize_database_url(url) == expected
+
+
+def test_vercel_entry_point_is_configured_and_importable():
+    root = Path(__file__).resolve().parents[2]
+    config = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))
+    assert config["tool"]["vercel"]["entrypoint"] == "index:app"
+    import index
+    assert index.app is app
+
+
+def test_pyproject_and_requirements_list_the_same_packages():
+    root = Path(__file__).resolve().parents[2]
+    declared = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))["project"]["dependencies"]
+    pinned = [line.strip() for line in (root / "backend" / "requirements.txt").read_text(encoding="utf-8").splitlines()
+              if line.strip() and not line.startswith("#")]
+    assert sorted(declared) == sorted(pinned)
 
 
 def test_purge_endpoint_rejects_missing_or_wrong_secret(client):

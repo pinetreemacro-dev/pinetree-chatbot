@@ -68,7 +68,7 @@ npm run dev
 
 ## Deployment
 
-Vercel (app) + Supabase (Postgres). `index.py` is the Vercel entry point and `vercel.json` schedules the nightly purge.
+Vercel (app) + Supabase (Postgres). `pyproject.toml` names `index:app` as the entry point and lists the packages Vercel installs (a test keeps it identical to `backend/requirements.txt`, so change both together); `vercel.json` schedules the nightly purge.
 
 Environment variables to set on Vercel (never commit them):
 

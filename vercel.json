@@ -1,8 +1,5 @@
 {
   "crons": [
     { "path": "/api/internal/purge", "schedule": "0 2 * * *" }
-  ],
-  "functions": {
-    "index.py": { "excludeFiles": "{backend/tests/**,.claude/**,README.md,CLAUDE.md}" }
-  }
+  ]
 }
