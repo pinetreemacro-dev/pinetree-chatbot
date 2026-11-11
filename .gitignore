@@ -1,0 +1,9 @@
+.venv/
+.env
+*.db
+__pycache__/
+.pytest_cache/
+.cache/
+# working exports (Q&A review files), not part of the app
+*.xlsx
+*.docx

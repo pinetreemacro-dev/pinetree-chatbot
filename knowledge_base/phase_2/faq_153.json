@@ -1,0 +1,10 @@
+{
+  "id": "FAQ_153",
+  "question": "What does the Sharpe ratio mean?",
+  "answer": "The Sharpe ratio measures return earned per unit of risk, with a higher figure meaning more return for the risk taken. The fund's Sharpe Ratio is 1.22.",
+  "category": "General Concepts",
+  "keywords": [],
+  "active": true,
+  "phase": 2,
+  "data_as_of": "2026-06-30"
+}

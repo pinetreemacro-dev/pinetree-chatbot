@@ -1,0 +1,9 @@
+{
+  "id": "FAQ_150",
+  "question": "What is a high watermark?",
+  "answer": "A high watermark is the highest value a fund has previously reached. Performance fees are charged only on gains above that level, so investors are not charged again for simply recovering past losses. This fund's performance fee is subject to a high watermark.",
+  "category": "General Concepts",
+  "keywords": [],
+  "active": true,
+  "phase": 2
+}

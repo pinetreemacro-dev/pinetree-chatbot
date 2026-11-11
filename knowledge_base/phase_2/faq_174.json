@@ -1,0 +1,9 @@
+{
+  "id": "FAQ_174",
+  "question": "How does the redemption fee differ from the exit load?",
+  "answer": "A 1% redemption fee applies to exits within 12 months of investing. After 12 months no exit load applies, so the 1% fee is only for exits within the first 12 months.",
+  "category": "Fees",
+  "keywords": [],
+  "active": true,
+  "phase": 2
+}

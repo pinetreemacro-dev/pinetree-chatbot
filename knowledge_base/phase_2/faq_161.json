@@ -1,0 +1,9 @@
+{
+  "id": "FAQ_161",
+  "question": "How does the high watermark affect performance fees?",
+  "answer": "Because the performance fee is subject to a high watermark, it applies only to gains above the fund's previous highest level, so investors are not charged again for recovering earlier losses. The detailed calculation is not covered in the information I have; our team can share the full terms.",
+  "category": "Fees",
+  "keywords": [],
+  "active": true,
+  "phase": 2
+}

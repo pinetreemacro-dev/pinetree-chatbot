@@ -1,0 +1,15 @@
+{
+  "id": "FAQ_047",
+  "question": "Why doesn't PineTree use the standard 60:40 blended benchmark used by peers?",
+  "answer": "PineTree instead presents three distinct benchmarks, each at 100% weight, to more clearly reflect its investment style and asset allocation.",
+  "category": "Benchmarks",
+  "keywords": [
+    "60:40",
+    "60/40",
+    "blended benchmark",
+    "why three benchmarks",
+    "peers"
+  ],
+  "active": true,
+  "phase": 1
+}

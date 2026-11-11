@@ -1,0 +1,14 @@
+{
+  "id": "FAQ_037",
+  "question": "What is the fund's Sharpe Ratio?",
+  "answer": "1.22.",
+  "category": "Risk Metrics",
+  "keywords": [
+    "sharpe ratio",
+    "sharpe",
+    "risk-adjusted return"
+  ],
+  "active": true,
+  "phase": 1,
+  "data_as_of": "2026-06-30"
+}

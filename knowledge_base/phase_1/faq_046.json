@@ -1,0 +1,18 @@
+{
+  "id": "FAQ_046",
+  "question": "What benchmarks does PineTree use to evaluate performance?",
+  "answer": "Three benchmarks at 100% weight each: iShares MSCI ACWI ETF (equity), iShares Core U.S. Aggregate Bond ETF/AGG (fixed income), and VanEck Real Assets ETF/RAAX (real assets).",
+  "category": "Benchmarks",
+  "keywords": [
+    "benchmark",
+    "benchmarks",
+    "compare",
+    "index",
+    "ACWI",
+    "AGG",
+    "RAAX",
+    "evaluate performance"
+  ],
+  "active": true,
+  "phase": 1
+}

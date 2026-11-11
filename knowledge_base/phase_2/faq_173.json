@@ -1,0 +1,9 @@
+{
+  "id": "FAQ_173",
+  "question": "What is the difference between the hurdle rate and the high watermark?",
+  "answer": "The hurdle rate (7%) is the minimum return needed before a performance fee applies. The high watermark is the fund's previous peak value: the performance fee applies only to gains above it.",
+  "category": "Fees",
+  "keywords": [],
+  "active": true,
+  "phase": 2
+}

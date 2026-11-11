@@ -1,0 +1,16 @@
+{
+  "id": "FAQ_027",
+  "question": "What is the operating fee?",
+  "answer": "Charged on actuals, capped at 0.5% p.a. on AUM.",
+  "category": "Fees",
+  "keywords": [
+    "operating fee",
+    "operating expenses",
+    "running costs",
+    "expenses",
+    "cap",
+    "fees"
+  ],
+  "active": true,
+  "phase": 1
+}

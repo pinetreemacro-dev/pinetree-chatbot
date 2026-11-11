@@ -1,0 +1,17 @@
+{
+  "id": "FAQ_036",
+  "question": "How are the fund's returns calculated?",
+  "answer": "On a point-to-point basis, with the NAV considered after operating and management fees but before adjustment for performance fees and other charges.",
+  "category": "Performance Figures",
+  "keywords": [
+    "how returns calculated",
+    "methodology",
+    "point-to-point",
+    "net of fees",
+    "NAV calculation",
+    "how is return computed"
+  ],
+  "active": true,
+  "phase": 1,
+  "data_as_of": "2026-06-30"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "FAQ_171",
+  "question": "What do the fund's risk metrics show?",
+  "answer": "The fund's Sharpe Ratio is 1.22, its standard deviation is 0.81% and its maximum drawdown is 10.40% (between 17th March 2025 and 8th April 2025).",
+  "category": "Risk Metrics",
+  "keywords": [],
+  "active": true,
+  "phase": 2,
+  "data_as_of": "2026-06-30"
+}

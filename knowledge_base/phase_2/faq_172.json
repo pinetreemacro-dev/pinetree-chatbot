@@ -1,0 +1,9 @@
+{
+  "id": "FAQ_172",
+  "question": "What is the difference between the management fee and the performance fee?",
+  "answer": "The management fee is 1% per annum, charged monthly on average AUM. The performance fee is 15% over a 7% hurdle rate, subject to a high watermark, so it is charged only on performance above that threshold.",
+  "category": "Fees",
+  "keywords": [],
+  "active": true,
+  "phase": 2
+}

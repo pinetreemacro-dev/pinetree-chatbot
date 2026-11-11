@@ -1,0 +1,16 @@
+{
+  "id": "FAQ_039",
+  "question": "What is the fund's maximum drawdown?",
+  "answer": "10.40%.",
+  "category": "Risk Metrics",
+  "keywords": [
+    "maximum drawdown",
+    "max drawdown",
+    "worst loss",
+    "downside",
+    "biggest fall"
+  ],
+  "active": true,
+  "phase": 1,
+  "data_as_of": "2026-06-30"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "FAQ_048",
+  "question": "What does the ACWI benchmark track?",
+  "answer": "The MSCI All Country World Index, covering large and mid-cap stocks across 23 developed and 24 emerging markets, representing roughly 85% of global equity market capitalization with U.S. exposure of 64.28%.",
+  "category": "Benchmarks",
+  "keywords": [
+    "ACWI",
+    "MSCI",
+    "all country world index",
+    "benchmark tracks"
+  ],
+  "active": true,
+  "phase": 1
+}

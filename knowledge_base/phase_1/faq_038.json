@@ -1,0 +1,15 @@
+{
+  "id": "FAQ_038",
+  "question": "What is the fund's standard deviation?",
+  "answer": "0.81%.",
+  "category": "Risk Metrics",
+  "keywords": [
+    "standard deviation",
+    "volatility",
+    "std dev",
+    "risk"
+  ],
+  "active": true,
+  "phase": 1,
+  "data_as_of": "2026-06-30"
+}

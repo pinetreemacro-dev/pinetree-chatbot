@@ -1,0 +1,9 @@
+{
+  "id": "FAQ_164",
+  "question": "How are the fund's benchmarks structured?",
+  "answer": "PineTree presents three benchmarks, each at 100% weight: iShares MSCI ACWI ETF (equity), iShares Core U.S. Aggregate Bond ETF/AGG (fixed income) and VanEck Real Assets ETF/RAAX (real assets). It does this instead of a standard 60:40 blend, to more clearly reflect its investment style and asset allocation.",
+  "category": "Benchmarks",
+  "keywords": [],
+  "active": true,
+  "phase": 2
+}

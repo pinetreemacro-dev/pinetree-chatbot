@@ -1,0 +1,15 @@
+{
+  "id": "FAQ_040",
+  "question": "When did the peak-to-valley drawdown occur?",
+  "answer": "Between 17th March 2025 and 8th April 2025.",
+  "category": "Risk Metrics",
+  "keywords": [
+    "drawdown date",
+    "when did drawdown occur",
+    "peak to valley",
+    "worst period"
+  ],
+  "active": true,
+  "phase": 1,
+  "data_as_of": "2026-06-30"
+}

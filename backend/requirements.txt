@@ -1,0 +1,9 @@
+fastapi==0.142.1
+uvicorn[standard]==0.54.0
+pydantic==2.13.5
+email-validator==2.3.0
+sqlalchemy==2.1.1
+python-dotenv==1.2.3
+fastembed==0.8.1
+apscheduler==3.11.3
+psycopg2-binary>=2.9

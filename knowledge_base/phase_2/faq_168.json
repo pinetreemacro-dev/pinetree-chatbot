@@ -1,0 +1,9 @@
+{
+  "id": "FAQ_168",
+  "question": "How does global liquidity drive the strategy?",
+  "answer": "PineTree Macro tracks global liquidity (G-7 central banks) and invests based on the direction and duration of capital flows, using Active Asset Allocation with US-listed ETFs and ETNs.",
+  "category": "Investment Objective & Strategy",
+  "keywords": [],
+  "active": true,
+  "phase": 2
+}

@@ -1,0 +1,16 @@
+{
+  "id": "FAQ_025",
+  "question": "What is the performance fee structure?",
+  "answer": "15% performance fee over a 7% hurdle rate, subject to a high watermark.",
+  "category": "Fees",
+  "keywords": [
+    "performance fee",
+    "incentive fee",
+    "carry",
+    "profit share",
+    "hurdle",
+    "fees"
+  ],
+  "active": true,
+  "phase": 1
+}

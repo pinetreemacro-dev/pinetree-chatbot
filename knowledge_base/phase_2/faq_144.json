@@ -1,0 +1,9 @@
+{
+  "id": "FAQ_144",
+  "question": "What is an ETN?",
+  "answer": "An ETN (exchange-traded note) is a debt instrument issued by a bank that trades on an exchange and pays a return linked to an index or asset. Unlike an ETF it does not hold the underlying assets, and it carries the issuer's credit risk. This fund may take exposure to listed debt-linked instruments, including ETNs, opportunistically.",
+  "category": "General Concepts",
+  "keywords": [],
+  "active": true,
+  "phase": 2
+}

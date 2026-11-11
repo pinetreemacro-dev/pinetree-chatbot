@@ -1,0 +1,9 @@
+{
+  "id": "FAQ_151",
+  "question": "What is a benchmark?",
+  "answer": "A benchmark is a reference index or investment used to compare a fund's performance. PineTree uses three benchmarks, each at 100% weight: iShares MSCI ACWI ETF (equity), iShares Core U.S. Aggregate Bond ETF/AGG (fixed income) and VanEck Real Assets ETF/RAAX (real assets).",
+  "category": "General Concepts",
+  "keywords": [],
+  "active": true,
+  "phase": 2
+}
