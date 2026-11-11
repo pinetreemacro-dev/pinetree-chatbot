@@ -13,3 +13,6 @@ os.environ["SMTP_HOST"] = ""
 os.environ["ADMIN_USERNAME"] = "admin"
 os.environ["ADMIN_PASSWORD"] = "test-pass"
 os.environ["CRON_SECRET"] = "test-cron"
+# The suite opens many sessions from one address; the rate-limit tests switch the limits on themselves.
+for _name in ("RATE_SESSION_PER_HOUR", "RATE_CONTACT_PER_HOUR", "RATE_CHAT_PER_MINUTE"):
+    os.environ[_name] = "0"

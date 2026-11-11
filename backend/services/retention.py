@@ -4,7 +4,7 @@ from sqlalchemy import delete, select
 
 from backend.core.config import settings
 from backend.database.database import SessionLocal
-from backend.database.models import ChatSession, Contact, Escalation, Message, now
+from backend.database.models import ChatSession, Contact, Escalation, Message, RateHit, now
 
 
 def purge_old_data() -> int:
@@ -16,5 +16,6 @@ def purge_old_data() -> int:
         deleted = db.execute(delete(ChatSession).where(ChatSession.last_activity < cutoff)).rowcount
         used = select(ChatSession.contact_id)
         db.execute(delete(Contact).where(Contact.id.not_in(used)))
+        db.execute(delete(RateHit).where(RateHit.created_at < now() - timedelta(days=1)))
         db.commit()
     return deleted

@@ -1,5 +1,3 @@
-import json
-import re
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Request
@@ -7,10 +5,10 @@ from pydantic import BaseModel, Field
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from backend.core.config import settings
 from backend.core.security import require_admin
 from backend.database.database import get_db
 from backend.database.models import ChatSession, Contact, Escalation, Message
+from backend.knowledge import store
 
 router = APIRouter(prefix="/api/admin", dependencies=[Depends(require_admin)])
 
@@ -85,38 +83,28 @@ def transcript(session_id: str, db: Session = Depends(get_db)):
              "confidence": m.confidence, "at": m.created_at.isoformat()} for m in msgs]
 
 
-def _faq_paths():
-    return {json.loads(p.read_text(encoding="utf-8"))["id"]: p
-            for p in sorted(settings.knowledge_dir.rglob("faq_*.json"))}
-
-
 @router.get("/faqs")
 def list_faqs():
-    return [json.loads(p.read_text(encoding="utf-8")) for p in _faq_paths().values()]
+    return store.all_faqs()
 
 
 @router.post("/faqs")
 def create_faq(body: FAQIn, request: Request):
-    paths = _faq_paths()
-    nums = [int(m.group(1)) for i in paths if (m := re.fullmatch(r"FAQ_(\d+)", i))]
-    faq_id = f"FAQ_{max(nums, default=0) + 1:03d}"
-    folder = settings.knowledge_dir / "phase_2"
-    folder.mkdir(parents=True, exist_ok=True)
-    return _write(request, folder / f"faq_{faq_id[4:]}.json", faq_id, body, phase=2)
+    next_number = max((store.number(f["id"]) for f in store.all_faqs()), default=0) + 1
+    return _save(request, f"FAQ_{next_number:03d}", body, phase=2)
 
 
 @router.put("/faqs/{faq_id}")
 def update_faq(faq_id: str, body: FAQIn, request: Request):
-    path = _faq_paths().get(faq_id)
-    if path is None:
+    current = next((f for f in store.all_faqs() if f["id"] == faq_id), None)
+    if current is None:
         raise HTTPException(404, "FAQ not found")
-    phase = json.loads(path.read_text(encoding="utf-8")).get("phase", 1)
-    return _write(request, path, faq_id, body, phase)
+    return _save(request, faq_id, body, current.get("phase", 1))
 
 
-def _write(request: Request, path, faq_id: str, body: FAQIn, phase: int):
+def _save(request: Request, faq_id: str, body: FAQIn, phase: int):
     data = {"id": faq_id, **body.model_dump(exclude_none=True), "phase": phase}
     data["keywords"] = [k.strip() for k in body.keywords if k.strip()]
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    store.save_faq(data)
     request.app.state.engine.reload()
     return data

@@ -10,6 +10,7 @@ from backend.core.config import settings
 from backend.database.database import get_db
 from backend.database.models import ChatSession, Contact, Escalation, Message, new_id, now
 from backend.services.email import send_escalation_email
+from backend.services.ratelimit import rate_limit
 
 router = APIRouter(prefix="/api")
 
@@ -61,7 +62,7 @@ def public_config():
     return {"contact_email": settings.contact_email}
 
 
-@router.post("/session")
+@router.post("/session", dependencies=[Depends(rate_limit("session", "rate_session_per_hour", 3600))])
 def create_session(body: SessionIn, request: Request, db: Session = Depends(get_db)):
     name = body.name.strip()
     contact = Contact(id=new_id(), name=name, email=body.email, phone=body.phone)
@@ -79,7 +80,7 @@ def create_session(body: SessionIn, request: Request, db: Session = Depends(get_
     }
 
 
-@router.post("/chat")
+@router.post("/chat", dependencies=[Depends(rate_limit("chat", "rate_chat_per_minute", 60))])
 def chat(body: ChatIn, background: BackgroundTasks, request: Request, db: Session = Depends(get_db)):
     session = db.get(ChatSession, body.session_id)
     if session is None:
@@ -87,6 +88,7 @@ def chat(body: ChatIn, background: BackgroundTasks, request: Request, db: Sessio
     message = body.message.strip()
     asked_ids = set(db.scalars(select(Message.matched_faq).where(
         Message.session_id == session.id, Message.matched_faq.is_not(None))))
+    request.app.state.engine.refresh_if_changed()
     reply = request.app.state.engine.answer(message, asked_ids=asked_ids)
     session.last_activity = now()
     db.add(Message(session_id=session.id, sender="user", text=message))
@@ -103,7 +105,7 @@ def chat(body: ChatIn, background: BackgroundTasks, request: Request, db: Sessio
             "suggestions": reply.suggestions, "offer_contact": reply.offer_contact}
 
 
-@router.post("/contact-request")
+@router.post("/contact-request", dependencies=[Depends(rate_limit("contact", "rate_contact_per_hour", 3600))])
 def contact_request(body: ContactRequestIn, background: BackgroundTasks, db: Session = Depends(get_db)):
     session = db.get(ChatSession, body.session_id)
     if session is None:

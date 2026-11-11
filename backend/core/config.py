@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parents[2]
 load_dotenv(ROOT / ".env")
+if os.getenv("VERCEL"):
+    os.environ.setdefault("HF_HOME", "/tmp/huggingface")  # the model downloader writes here; only /tmp is writable
 
 
 def normalize_database_url(url: str) -> str:
@@ -32,7 +34,11 @@ class Settings:
     clarify_margin = float(os.getenv("CLARIFY_MARGIN", "0.04"))
     escalation_example_similarity = float(os.getenv("ESCALATION_EXAMPLE_SIMILARITY", "0.85"))
     embedding_model = os.getenv("EMBEDDING_MODEL", "BAAI/bge-small-en-v1.5")
-    model_cache_dir = Path(os.getenv("MODEL_CACHE_DIR", str(ROOT / ".cache" / "fastembed")))
+    # A serverless deployment can only write to /tmp, so the embedding model is fetched there on a cold start.
+    model_cache_dir = Path(os.getenv("MODEL_CACHE_DIR", "/tmp/fastembed" if serverless else str(ROOT / ".cache" / "fastembed")))
+    rate_session_per_hour = int(os.getenv("RATE_SESSION_PER_HOUR", "20"))  # per visitor address; 0 turns a limit off
+    rate_contact_per_hour = int(os.getenv("RATE_CONTACT_PER_HOUR", "5"))
+    rate_chat_per_minute = int(os.getenv("RATE_CHAT_PER_MINUTE", "30"))
     retention_days = int(os.getenv("RETENTION_DAYS", "30"))
     allowed_origins = [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")]
     knowledge_dir = Path(os.getenv("KNOWLEDGE_DIR", str(ROOT / "knowledge_base")))

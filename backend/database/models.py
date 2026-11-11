@@ -1,3 +1,4 @@
+import json
 import uuid
 from datetime import datetime, timezone
 
@@ -52,4 +53,33 @@ class Escalation(Base):
     confidence: Mapped[float | None] = mapped_column(Float, nullable=True)
     email_sent: Mapped[bool] = mapped_column(Boolean, default=False)
     status: Mapped[str] = mapped_column(String(10), default="open")  # open | resolved
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=now)
+
+
+class FAQRow(Base):
+    """An FAQ added or edited in the admin page. It overrides the bundled knowledge_base file with the same id."""
+    __tablename__ = "faqs"
+    id: Mapped[str] = mapped_column(String(20), primary_key=True)
+    question: Mapped[str] = mapped_column(Text)
+    answer: Mapped[str] = mapped_column(Text)
+    category: Mapped[str] = mapped_column(String(100), default="")
+    keywords: Mapped[str] = mapped_column(Text, default="[]")  # JSON list
+    active: Mapped[bool] = mapped_column(Boolean, default=True)
+    data_as_of: Mapped[str | None] = mapped_column(String(10), nullable=True)
+    phase: Mapped[int] = mapped_column(Integer, default=2)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=now)
+
+    def as_dict(self) -> dict:
+        data = {"id": self.id, "question": self.question, "answer": self.answer, "category": self.category,
+                "keywords": json.loads(self.keywords or "[]"), "active": self.active}
+        if self.data_as_of:
+            data["data_as_of"] = self.data_as_of
+        return data | {"phase": self.phase}
+
+
+class RateHit(Base):
+    """Request counter per client and time window, kept in the database so every server instance sees it."""
+    __tablename__ = "rate_hits"
+    key: Mapped[str] = mapped_column(String(120), primary_key=True)  # scope:client:window
+    count: Mapped[int] = mapped_column(Integer, default=0)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=now)

@@ -4,7 +4,8 @@ import numpy as np
 
 from backend.chatbot.guards import FORWARD_LOOKING, HUMAN_REQUEST, periods
 from backend.core.config import settings
-from backend.knowledge.loader import load_conversation, load_escalation_examples, load_faqs, load_related
+from backend.knowledge import store
+from backend.knowledge.loader import load_conversation, load_escalation_examples, load_related
 from backend.knowledge.retrieval import SemanticIndex, normalize
 
 ESCALATION_REPLY = ("I'm connecting you with our team, who will get in touch with you shortly. "
@@ -45,21 +46,30 @@ class ChatEngine:
         self.reload()
 
     def reload(self):
-        self.faqs = load_faqs(settings.knowledge_dir)
-        self.generic = {normalize(q): a for q, a in load_conversation(settings.knowledge_dir).items()}
-        self.related_map = load_related(settings.knowledge_dir)
-        self.index = SemanticIndex(self.faqs, load_escalation_examples(settings.knowledge_dir))
-        self.by_id = {f.id: f for f in self.faqs}
-        self.by_question = {normalize(f.question): f for f in self.faqs}
-        self.position = {f.id: i for i, f in enumerate(self.faqs)}
+        stamp = store.stamp()
+        faqs = store.active_faqs()
+        generic = {normalize(q): a for q, a in load_conversation(settings.knowledge_dir).items()}
+        related_map = load_related(settings.knowledge_dir)
+        index = SemanticIndex(faqs, load_escalation_examples(settings.knowledge_dir))
         # Rows that share an answer are one topic: the first row is its anchor, and the first properly written
         # question (capitalised, ending in ? or .) is the wording shown in suggestions, never a typo variant.
-        self.canonical = {}
-        self.display = {}
-        for faq in self.faqs:
-            self.canonical.setdefault(faq.answer, faq)
+        canonical, display = {}, {}
+        for faq in faqs:
+            canonical.setdefault(faq.answer, faq)
             if faq.question[:1].isupper() and faq.question.rstrip()[-1:] in "?.":
-                self.display.setdefault(faq.answer, faq.question)
+                display.setdefault(faq.answer, faq.question)
+        # Assigned together at the end so a request running meanwhile never sees half old, half new state.
+        self.generic, self.related_map, self.index = generic, related_map, index
+        self.by_id = {f.id: f for f in faqs}
+        self.by_question = {normalize(f.question): f for f in faqs}
+        self.position = {f.id: i for i, f in enumerate(faqs)}
+        self.canonical, self.display = canonical, display
+        self.faqs, self.stamp = faqs, stamp
+
+    def refresh_if_changed(self):
+        """Another server instance may have saved an FAQ from the admin page; pick that up."""
+        if store.stamp() != self.stamp:
+            self.reload()
 
     def sample_questions(self, n: int = 6) -> list[str]:
         pool = [f for f in self.faqs if f.phase == 1] or self.faqs

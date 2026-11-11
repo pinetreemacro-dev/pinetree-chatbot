@@ -45,7 +45,7 @@ copy .env.example .env
 
 The first start downloads a small embedding model (BAAI/bge-small-en-v1.5, cached in `.cache/`), so it needs internet once. Answer / clarify / hand-off thresholds are `CONFIDENCE_HIGH`, `CONFIDENCE_LOW` and `CLARIFY_MARGIN` (similarity scores, not probabilities); `backend/tests/test_matching_quality.py` must still pass after any dataset or threshold change.
 
-The admin dashboard shows stats, escalated questions (with full chat, resolve and "Create FAQ"), leads, and FAQ add/edit. New FAQs are written to `knowledge_base/phase_2/` and take effect immediately.
+The admin dashboard shows stats, escalated questions (with full chat, resolve and "Create FAQ"), leads, and FAQ add/edit. FAQs added or edited there are saved in the database (table `faqs`) and override the `knowledge_base/` file with the same id; they take effect immediately on every server instance. To change the bundled set permanently, edit the JSON files and commit them.
  Without `SMTP_HOST` set, escalation emails are logged instead of sent.
 
 ### Frontend Setup
@@ -68,9 +68,16 @@ npm run dev
 
 ## Deployment
 
-Start with free-tier services:
-- Backend: Free cloud hosting (Render, Railway, Vercel)
-- Database: PostgreSQL free tier
-- Email: SMTP/free service
+Vercel (app) + Supabase (Postgres). `index.py` is the Vercel entry point and `vercel.json` schedules the nightly purge.
 
-Scale to managed services as traffic grows.
+Environment variables to set on Vercel (never commit them):
+
+| Variable | Value |
+| --- | --- |
+| `DATABASE_URL` | Supabase "Transaction pooler" connection string (port 6543) |
+| `ADMIN_PASSWORD` | long random password for `/admin` |
+| `CRON_SECRET` | long random string; Vercel Cron sends it when it calls `/api/internal/purge` |
+| `ESCALATION_EMAIL`, `CONTACT_EMAIL` | where team emails go / the address visitors see |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD` | outgoing email (Gmail app password or similar) |
+
+On a serverless host the app skips the in-process scheduler, stores the embedding model in `/tmp` (downloaded on a cold start), and trusts the `X-Forwarded-For` header for the per-visitor rate limits (`RATE_SESSION_PER_HOUR`, `RATE_CONTACT_PER_HOUR`, `RATE_CHAT_PER_MINUTE`; `0` turns one off).
