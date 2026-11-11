@@ -4,10 +4,11 @@ from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
+from sqlalchemy.exc import IntegrityError
 
 from backend.core.config import normalize_database_url
 from backend.database.database import SessionLocal
-from backend.database.models import ChatSession, now
+from backend.database.models import ChatSession, Message, now
 from backend.main import app
 
 CONTACT = {"name": "Sam Lee", "email": "sam@example.com", "phone": "+44 20 7946 0958"}
@@ -28,6 +29,13 @@ def client():
 ])
 def test_database_url_names_the_postgres_driver(url, expected):
     assert normalize_database_url(url) == expected
+
+
+def test_local_database_enforces_foreign_keys_like_postgres():
+    with SessionLocal() as db:
+        db.add(Message(session_id="no-such-session", sender="bot", text="x"))
+        with pytest.raises(IntegrityError):
+            db.commit()
 
 
 def test_vercel_entry_point_is_configured_and_importable():

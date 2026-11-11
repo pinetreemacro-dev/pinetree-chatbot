@@ -71,6 +71,7 @@ def create_session(body: SessionIn, request: Request, db: Session = Depends(get_
     greeting = (f"Welcome back, {first_name}! How can I help you today?" if body.returning
                 else f"Hi, {first_name}! You're all set. How can I help you today?")
     db.add_all([contact, session])
+    db.flush()  # Postgres enforces foreign keys, so the session row must exist before the message that points at it
     db.add(Message(session_id=session.id, sender="bot", text=greeting))
     db.commit()
     return {
